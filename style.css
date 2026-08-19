@@ -1,0 +1,61 @@
+* {
+    margin: 0%;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+body {
+    font-family:Sora;
+    font-weight: bold;
+}
+
+h1 {
+    text-align: center;
+}
+
+section p {
+    font-size: 2em;
+    text-align: center;
+    margin: 5% 0;
+
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    margin: 5%;
+}
+
+div button {
+    width: 80px;
+    height: 80px;
+    font-size: 3em;
+}
+
+div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.reset{
+    display: flex;
+    justify-content: center;
+    
+}
+.reset button{
+    height: 70px;
+    width: 200px;
+    font-size: 1.5em;
+    border-radius: 20px;
+    margin: 5%;
+}
+
+button{
+    background-color: rgb(5, 5, 5);
+    color: white;
+    font-family: Sora;
+}
