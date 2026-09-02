@@ -1,58 +1,47 @@
-//Mode multijoueur
-const entete = document.querySelector("p");
-const btns = [...document.querySelectorAll("section button")];
-const reset = document.querySelector('p button');
-let partieTerminée = false;
-let tab = [["", "", ""],
-["", "", ""],
-["", "", ""]];
-let coln = 0;
-let lin = 0;
-btns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        if (partieTerminée == false) {
+function joueur(etat, pion, tab, btns) {
 
-            if (btn.textContent == "") {
-                lin = Number(btn.dataset.ligne);
-                coln = Number(btn.dataset.colonne);
-                tab[lin][coln] = entete.textContent;
-                btn.textContent = entete.textContent;
-                if (verif(tab) != 0) {
-                    entete.textContent = "Le gagnant est : " + verif(tab);
-                    partieTerminée = true;
-
-                }
-                else if (!tab[0].includes("") && !tab[1].includes("") && !tab[2].includes("")) {
-                    entete.textContent = "Match nul !";
-                }
-                else {
-                    if (entete.textContent == 'x') {
-                        entete.textContent = 'o';
-                    }
-                    else {
-                        entete.textContent = 'x';
-                    }
-                }
-
-            }
-        }
-    });
-});
-reset.addEventListener("click", () => {
-    reinitialise(btns);
-    tab = [["", "", ""],
-    ["", "", ""],
-    ["", "", ""]];
-    console.log(tab);
-    entete.textContent = 'x';
-    partieTerminée = false;
-});
-
-
-function reinitialise(btns) {
     btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (btn.textContent == "" && etat.partieTerminée == false) {
+                btn.textContent = pion.textContent;
+                tab[Number(btn.dataset.ligne)][Number(btn.dataset.colonne)] = pion.textContent;
+                if (verif(tab) != 0) {
+                    pion.textContent = "Le gagnant est : "+verif(tab);
+                    etat.partieTerminée = true;
+                }
+                else{
+                    controPion(pion);
+                    estComplet(tab, pion);
+
+                }
+            }
+        });
+    });
+}
+
+
+function rejouer(tab, btns, pion) {
+    btns.forEach(btn=>{
         btn.textContent = "";
     });
+    tab.forEach(ligne=>ligne.fill(""));
+    pion.textContent = "x";
+
+}
+
+function estComplet(tab, pion) {
+    if (!tab[0].includes("") && !tab[1].includes("") && !tab[2].includes("")) {
+        pion.textContent = 'Match Null';
+    }
+}
+
+function controPion(pion) {
+    if (pion.textContent == "x") {
+        pion.textContent = "o";
+    }
+    else {
+        pion.textContent = "x"
+    }
 }
 
 function verif(tab) {
@@ -64,7 +53,7 @@ function verif(tab) {
                 let colonne1 = indey + parcour[x][1];
                 let ligne2 = index + parcour[x][0] * 2;
                 let colonne2 = indey + parcour[x][1] * 2;
-                if (ligne1 >= 0 && colonne1 >= 0 && ligne1 < 3 && colonne1 < 3 && ligne2 >= 0 && colonne2 >= 0 && ligne2 < 3 && colonne2 < 3 && tab[ligne1][colonne1] == tab[index][indey] && tab[ligne2][colonne2] == tab[index][indey]) {
+                if (tab[index][indey] !="" && ligne1 >= 0 && colonne1 >= 0 && ligne1 < 3 && colonne1 < 3 && ligne2 >= 0 && colonne2 >= 0 && ligne2 < 3 && colonne2 < 3 && tab[ligne1][colonne1] == tab[index][indey] && tab[ligne2][colonne2] == tab[index][indey]) {
                     return tab[index][indey];
                 }
             }
@@ -72,3 +61,31 @@ function verif(tab) {
     }
     return 0;
 }
+
+const btns = document.querySelectorAll("section button");
+let tab = [["", "", ""],
+["", "", ""],
+["", "", ""]];
+const pion = document.querySelector("p");
+const rejoue = document.querySelector('.reset');
+let etat =  {partieTerminée  : false};
+
+joueur(etat, pion, tab, btns);
+rejoue.addEventListener("click", () => {
+    rejouer(tab, btns, pion);
+    etat.partieTerminée = false;
+    btns.forEach(btn=>{
+        console.log(btn.textContent);
+    });
+    console.log(tab);
+    console.log(partieTerminée);
+});
+
+
+
+
+
+
+
+
+
